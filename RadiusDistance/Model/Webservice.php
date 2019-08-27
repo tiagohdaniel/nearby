@@ -38,13 +38,6 @@ class ThdSolution_RadiusDistance_Model_Webservice extends Mage_Core_Model_Abstra
      * send()
      * Method to send informations to webservice.
      *
-     * @example
-     *            $webservices = Mage::getSingleton('smartservices/webservice');
-     *            $webservices->request = '/cesta/estimativafrete';
-     *            $var = $webservices->send();
-     *            $var = $webservices->send('array');
-     *            $var = $webservices->send('json');
-     *
      * @param     string
      * @param     string     *
      * @return    mixed|string
@@ -52,7 +45,7 @@ class ThdSolution_RadiusDistance_Model_Webservice extends Mage_Core_Model_Abstra
      * @throws    Exception
      * @access    public
      */
-    public function send($url, $returnFormat = 'json')
+    public function send($url, $returnFormat = 'json', $config)
     {
         if(!$url) {
             Mage::throwException('ERROR: No URL for requested webservice.');
@@ -65,7 +58,7 @@ class ThdSolution_RadiusDistance_Model_Webservice extends Mage_Core_Model_Abstra
 
             $requestType = $this->getRequestType() == 'POST' ? 'POST' : 'GET';
 
-            $client = new Zend_Http_Client($url);
+            $client = new Zend_Http_Client($url, $config);
 
             $return = new Varien_Object();
 

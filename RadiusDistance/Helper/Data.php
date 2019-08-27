@@ -35,4 +35,15 @@ class ThdSolution_RadiusDistance_Helper_Data extends Mage_Core_Helper_Abstract
         return $query;
     }
 
+    public function setAddresstoCookie($places)
+    {
+        Mage::getModel('core/cookie')->set('places', serialize($places));
+    }
+
+    public function getAddressCookie($address)
+    {
+        $cookieData = unserialize(Mage::getModel('core/cookie')->get('places'));
+        return $cookieData[$address] ? json_encode($cookieData) : false;
+    }
+
 }

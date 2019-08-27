@@ -15,34 +15,21 @@
 Class ThdSolution_RadiusDistance_IndexController extends Mage_Core_Controller_Front_Action
 {
 
+    private $_addresses = array();
+
     public function indexAction()
     {
-        $request        = Mage::app()->getRequest()->getParams();
-        $url            = sprintf('https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s', $request['address'], $request['key']) ;
-        $service        = Mage::getModel('thdsolution_radiusdistance/webservice')->send($url);
+        $request         = Mage::app()->getRequest()->getParams();
+        $alreadySearched = Mage::helper('thdsolution_radiusdistance')->getAddressCookie($request['address']);
 
-        $jsonResponse   = json_decode($service->getBody());
-        $location       = $jsonResponse->results[0]->geometry->location;
-
-        $placeLat       = $location->lat;
-        $placeLon       = $location->lng;
-
-        $resource       = Mage::getSingleton('core/resource');
-        $readConnection = $resource->getConnection('core_read');
-
-        $query          = Mage::helper('thdsolution_radiusdistance')->getHaversineQuery($placeLat, $placeLon);
-        $results        = $readConnection->fetchAll($query);
-
-        foreach($results as  $key => $place){
-            $places[$key] = array(
-                'name'      => $place['name'],
-                'distancia' => $place['distance']
-            );
+        if (!$alreadySearched) {
+            $places = Mage::getModel('thdsolution_radiusdistance/radius')->getApiInformation($request);
+            echo 'API';
+            echo $places;
         }
 
-        //echo json_encode($places);
-
-        return $places;
+        echo 'COOKIE';
+        echo $alreadySearched;
     }
 
 }
