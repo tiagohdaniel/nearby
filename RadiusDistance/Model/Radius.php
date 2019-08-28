@@ -17,6 +17,12 @@ class ThdSolution_RadiusDistance_Model_Radius extends Mage_Core_Model_Abstract
 
     CONST GOOGLE_API = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s';
 
+    /**
+     * Request data from Google API
+     *
+     * @param $request
+     * @return string
+     */
     public function getApiInformation($request)
     {
         $url             = sprintf(self::GOOGLE_API, $request['address'], $request['key']) ;

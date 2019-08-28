@@ -15,19 +15,23 @@
 Class ThdSolution_RadiusDistance_IndexController extends Mage_Core_Controller_Front_Action
 {
 
-    private $_addresses = array();
-
     public function indexAction()
     {
         $request         = Mage::app()->getRequest()->getParams();
         $alreadySearched = Mage::helper('thdsolution_radiusdistance')->getAddressCookie($request['address']);
 
+        /**
+         * Return data from api
+         */
         if (!$alreadySearched) {
             $places = Mage::getModel('thdsolution_radiusdistance/radius')->getApiInformation($request);
             echo 'API';
             echo $places;
         }
 
+        /**
+         * Return data from Cookie
+         */
         echo 'COOKIE';
         echo $alreadySearched;
     }
